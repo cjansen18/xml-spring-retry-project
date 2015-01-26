@@ -1,7 +1,10 @@
 Spring Retry project example (featuring a XML configured RetryTemplate)
 =====================================================================
 
-Quick and dirty example of how to use the Spring Retry project.
+Quick and dirty example of how to use the Spring Retry project.   This project basically allows you to retry
+certain operations should a configurable thrown exception be encountered.
+
+The developer can also configure the retry behavior (ie -frequency of retries).
 
 Spring project
 --------------
