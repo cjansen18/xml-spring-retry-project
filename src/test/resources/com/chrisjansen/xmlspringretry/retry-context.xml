@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+        <property name="backOffPolicy" ref="backOffPolicy"/>
+        <property name="retryPolicy" ref="retryPolicy"/>
+    </bean>
+
+    <bean id="backOffPolicy" class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+        <!-- 5 seconds -->
+        <property name="initialInterval" value="5000"/>
+        <!-- 5 minutes -->
+        <property name="maxInterval" value="300000"/>
+        <property name="multiplier" value="1.5"/>
+    </bean>
+
+    <bean id="retryPolicy" class="org.springframework.retry.policy.SimpleRetryPolicy">
+        <constructor-arg value="120"/>
+        <constructor-arg>
+            <!-- Exceptions that trigger retry logic.  These typically are encountered when JMS queue managers are restarted -->
+            <map>
+                <entry key="org.springframework.jms.UncategorizedJmsException" value="true" />
+                <entry key="javax.jms.JMSException" value="true" />
+            </map>
+        </constructor-arg>
+    </bean>
+
+</beans>
